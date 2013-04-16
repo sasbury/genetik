@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<title>Genetik Results</title>
+		<link rel="stylesheet" type="text/css" media="all" href="web/css/genetik.css" />
+		
+		<script language="javascript" type="text/javascript" src="web/js/jquery-1.4.4.min.js"></script>
+		<script language="javascript" type="text/javascript" src="web/js/jquery.history.js"></script>
+		<script language="javascript" type="text/javascript" src="web/js/jquery.ajaxqueue.js"></script>
+		<script language="javascript" type="text/javascript" src="web/js/jquery.colorhelpers.js"></script>
+		<script language="javascript" type="text/javascript" src="web/js/jquery.flot.js"></script>
+		<script language="javascript" type="text/javascript" src="web/js/jquery.flot.errorbars.js"></script>
+		<script language="javascript" type="text/javascript" src="web/js/jquery.flot.text.js"></script>
+		<script language="javascript" type="text/javascript" src="web/js/jquery.jqplot.toimg.js"></script>
+		<script language="javascript" type="text/javascript" src="web/js/genetik.js"></script>
+
+		<script language="javascript" type="text/javascript">
+			jQuery(document).ready(function()
+			{ 
+	       		$.history.init(genetik.refresh,{ unescape: ",/=" });
+			});
+		</script>
+		
+	</head>
+	<body>
+		<div id='content'>
+			<h2 id="results_header">Genetik Results</h2>
+				<div id="toc"><ul id="toc_list"></ul></div>
+				<div id="main_area"><h4><img src="web/loading.gif"> Loading Data ...</h4></div>
+		</div>
+		<div id="footer">
+			<p>Created by Stephen Asbury, University of Michigan, 2010</p>
+		</div>
+		
+	</body>
+</html>

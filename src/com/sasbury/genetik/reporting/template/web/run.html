@@ -1,0 +1,87 @@
+
+<h3>Statistics</h3>
+<table summary="This table contains the statisitics for this run." id="run_stats_table">
+</table>
+
+<div id='run_customization'>
+</div>
+
+<div id="gen_stats">
+</div>
+
+<div id="runmenu_log_area"></div>
+
+
+<script language="javascript" type="text/javascript">
+
+	var currentRunName = genetik.calculateName('run');
+	
+    $('#runmenu_log_area').append('<a href="#" id="runmenu_log">Log</a>');
+    $('#runmenu_log').click(function()
+    {
+        $('#main_area').empty();
+
+        $('#main_area').append("<pre></pre>");
+	    $('#main_area pre').load(currentRunName+'/genetik.log');
+    });
+
+	var currentRunData = genetik.runData[currentRunName];
+	
+	if(currentRunData != null)
+	{
+		var runStatistics = currentRunData['runStatistics'];
+	
+		$('#run_stats_table').empty();
+	
+		var count = 0;
+		
+		jQuery.each(runStatistics, function(key, val)
+		{
+			if(key == 'Best Individual ID')
+			{
+				val = '<a href="#" id="bestofrun">'+val+'</a>';
+			}
+			if(key.lastIndexOf('Time') == key.length-'Time'.length)
+			{
+				if(parseInt(val)>60000) val = (parseInt(val)/60000)+' (m) or '+(parseInt(val)/1000)+' (s) or '+val+' (ms)';
+				else val = (parseInt(val)/1000)+' (s) or '+val+' (ms)';
+			}
+			$('#run_stats_table').append('<tr class="'+((count++%2==0)?'odd':'even')+'"><td>'+key+'</td><td>'+val+'</td></tr>');
+		});
+		
+		var gen = runStatistics['Best Individual Generation'];
+		var iid = runStatistics['Best Individual ID'];
+		$('#bestofrun').attr('href','#run='+currentRunName+'/gen='+gen+'/id='+iid);
+		
+		var generationStatistics = currentRunData['generationStatistics'];
+		
+		$('#gen_stats').empty();
+
+		jQuery.each(generationStatistics, function(gen, genStats)
+		{
+			var id = "gen_"+gen;
+			
+			$('#gen_stats').append('<h3>Generation '+gen+'</h3>');
+			$('#gen_stats').append('<table id="'+id+'"></table>');
+			
+			count = 0;
+			
+			jQuery.each(genStats, function(key, val)
+			{
+				if(key == 'Best Individual ID') val = '<a href="#" id="bestofgen_'+gen+'">'+val+'</a>';
+				
+				$('#'+id).append('<tr class="'+((count++%2==0)?'odd':'even')+'"><td>'+key+'</td><td>'+val+'</td></tr>');
+			});
+			
+			var iid = genStats['Best Individual ID'];
+			$('#bestofgen_'+gen).attr('href','#run='+currentRunName+'/gen='+gen+'/id='+iid);
+		});
+		
+		var customFile = genetik.configurationData['customRunFragment'];
+		if(customFile != null)
+		{
+			$('#run_customization').load('web/'+customFile);
+		}
+	}
+	
+</script>

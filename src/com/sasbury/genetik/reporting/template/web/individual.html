@@ -1,0 +1,68 @@
+
+<div id="run_gen_info"></div>
+
+<div id='ind_customization'>
+</div>
+
+<table id="individual_table">
+</table>
+
+<script language="javascript" type="text/javascript">
+
+	var currentRunName = genetik.calculateName("run");
+	var currentIndividualGen = genetik.calculateName("gen");
+	var currentIndividualId = genetik.calculateName("id");
+	
+	$('#run_gen_info').empty();
+	$('#run_gen_info').append('<p>Run = '+currentRunName+', Generation = '+currentIndividualGen+', ID = '+currentIndividualId+'</p>');
+	
+	var runData = genetik.runData[currentRunName];
+	var generations = runData['generations'];
+	var genData = generations[currentIndividualGen]
+	var pop = genData['pop'];
+	var indData = null;
+
+	var count = 0;
+	
+	jQuery.each(pop, function(i, value)
+	{
+		if(value['id'] == currentIndividualId)
+		{
+			currentIndividual = value;
+			
+			jQuery.each(value, function(key, val)
+			{
+				if(key == 'p1' || key == 'p2')
+				{
+					if(val!=null && currentIndividualGen>0) val = '<a href="#" id="'+key+'">'+val+'</a>';
+				}
+				
+				key = genetik.popKeyToFriendly[key];
+				if(key && !key.indexOf('_')==0)
+				{
+					$('#individual_table').append('<tr class="'+((count++%2==0)?'odd':'even')+'"><td>'+key+'</td><td>'+val+'</td></tr>');
+				}
+			});
+			
+			
+			var p1 = value['p1'];
+			var p2 = value['p2'];
+			if(p1!=null && currentIndividualGen>0)
+			{
+				$('#p1').attr('href','#run='+currentRunName+'/gen='+(currentIndividualGen-1)+'/id='+p1);	
+			}
+			if(p2!=null && currentIndividualGen>0)
+			{
+				$('#p2').attr('href','#run='+currentRunName+'/gen='+(currentIndividualGen-1)+'/id='+p2);
+			}
+			return;
+		}
+	});
+
+	var customFile = genetik.configurationData['customIndFragment'];
+	if(customFile != null)
+	{
+		$('#ind_customization').load('web/'+customFile);
+	}
+	
+</script>

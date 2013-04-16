@@ -1,0 +1,92 @@
+
+<div id="run_list">
+</div>
+<hr />
+<h3>Fitness vs Generation</h3>
+<table>
+	<tr><th>Maximum</th><th>Average</th><th>Minimum</th></tr>
+	<tr>
+		<td><div id="max_fitness" class="summaryGraph"></div></td>
+		<td><div id="average_fitness" class="summaryGraph"></div></td>
+		<td><div id="min_fitness" class="summaryGraph"></div></td>
+	</tr>
+</table>
+
+<div id="summary_customization">
+</div>
+
+<script type="text/javascript" language="javascript">
+
+	var avgFitData = new Array();
+	var maxFitData = new Array();
+	var minFitData = new Array();
+	
+	$.each(genetik.runData, function(ind, rData)
+	{
+		var genStats = rData['generationStatistics'];
+		var avgFitPoints = new Array();
+		var maxFitPoints = new Array();
+		var minFitPoints = new Array();
+	
+		$.each(genStats, function(index, genData){ 
+		
+			var avgFit = genData['Average Individual Fitness'];
+			var maxFit = genData['Maximum Individual Fitness'];
+			var minFit = genData['Minimum Individual Fitness'];
+			avgFitPoints.push([index,avgFit]);
+			maxFitPoints.push([index,maxFit]);
+			minFitPoints.push([index,minFit]);
+		});
+		
+		var rStats = rData['runStatistics'];
+		var name = rStats['Name'];
+		var mf = rStats['Maximum Individual Fitness'];
+		var gen = rStats['Best Individual Generation'];
+		var opti = rStats['optimizer'];
+		
+		avgFitData.push({label:name,data:avgFitPoints});
+		maxFitData.push({label:name,data:maxFitPoints});
+		minFitData.push({label:name,data:minFitPoints});
+		
+		$('#run_list').append("<h5>"+name+" - maximum fitness of "+mf+" in generation "+gen+" - using "+opti+"</h5>");
+	});
+
+	$.plot($('#max_fitness'),maxFitData,
+		{
+        	colors: ["darkblue", "darkred", "darkgreen", "darkcyan", "darkviolet","darkorange"],
+			series: {lines: { show: true },points: { show: true, fill: true, radius: 3 }},
+			legend: {position: "se",backgroundColor: "#fff",backgroundOpacity: 0.35},
+            grid: {backgroundColor: { colors: ["white", "white"]}, canvasText: {show: true}}
+		}
+	);
+
+	convertFlotToImage('#max_fitness');
+	
+	$.plot($('#average_fitness'),avgFitData,
+		{
+        	colors: ["darkblue", "darkred", "darkgreen", "darkcyan", "darkviolet","darkorange"],
+			series: {lines: { show: true },points: { show: true, fill: true, radius: 3 }},
+			legend: {position: "se",backgroundColor: "#fff",backgroundOpacity: 0.35},
+            grid: {backgroundColor: { colors: ["#fff", "#fff"]}, canvasText: {show: true}}
+		}
+	);
+
+	convertFlotToImage('#average_fitness');
+	
+	$.plot($('#min_fitness'),minFitData,
+		{
+        	colors: ["darkblue", "darkred", "darkgreen", "darkcyan", "darkviolet","darkorange"],
+			series: {lines: { show: true },points: { show: true, fill: true, radius: 3 }},
+			legend: {position: "se",backgroundColor: "#fff",backgroundOpacity: 0.35},
+            grid: {backgroundColor: { colors: ["#fff", "#fff"]}, canvasText: {show: true}}
+		}
+	);
+
+	convertFlotToImage('#min_fitness');
+	
+	var customFile = genetik.configurationData['customSummaryFragment'];
+	if(customFile != null)
+	{
+		$('#summary_customization').load('web/'+customFile);
+	}
+</script>

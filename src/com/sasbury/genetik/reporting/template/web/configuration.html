@@ -1,0 +1,16 @@
+
+<table summary="This table contains the configuration for this set of runs.">
+	<tbody id="summary_table">
+	</tbody>
+</table>
+
+<script language="javascript" type="text/javascript">
+
+	var count = 0;
+	
+	jQuery.each(genetik.configurationData, function(key, value)
+	{
+		$('#summary_table').append('<tr class="'+((count++%2==0)?'odd':'even')+'"><td>'+key+'</td><td>'+value+'</td></tr>');
+	});
+	
+</script>
